@@ -1,33 +1,45 @@
 const root = "../../res/images/";
-const grassTileSrc = root + "grass_tile.png";
-const pavementTileSrc = root + "pavement_tile.jpg";
-
-const size = 100;
-
-const grassTile = $("<img>").attr({
-	"src": grassTileSrc,
-	"width": size,
-	"height": size
-}).addClass("tile");
-const pavementTile = $("<img>").attr({
-	"src": pavementTileSrc,
-	"width": size,
-	"height": size
-}).addClass("tile");
-
+const tileSize = 100;
 const mapWidth = 100;
 const mapHeight = 100;
 const wH = window.innerHeight;
 const wW = window.innerWidth;
 
+const grassTile = makeTile("grass_tile.png");
+const pavementTile = makeTile("pavement_tile.jpg");
+const sandTile = makeTile("sand_waves_tile.jpg");
+const clayTile = makeTile("dry_clay_tile.jpg");
+
+function makeTile(tileName) {
+	return $("<img>").attr({
+		"src": root + tileName,
+		"width": tileSize,
+		"height": tileSize
+	}).addClass("tile");
+}
+const map = [];
+
+for (let y = 0; y < mapHeight; y++) {
+	const row = []
+	map.push(row);
+	for (let x = 0; x < mapWidth; x++) {
+		row.push({
+			type: 'grass',
+		})
+	}
+};
+
+map[1][2].type = "road";
+
+console.log( map[1][1]);
 const left = 37;
 const up = 38;
 const right = 39;
 const down = 40;
 let viewX = 0;
-let viewY = 15;
+let viewY = 0;
 
-renderCurrentMapView(viewX, viewY);
+renderCurrentView(viewX, viewY);
 
 $(window).keydown(function (event) {
 
@@ -40,27 +52,28 @@ $(window).keydown(function (event) {
 	} else if (event.which == up && viewY > 0) {
 		viewY -= 1;
 	}
-	renderCurrentMapView(viewX, viewY);
+	renderCurrentView(viewX, viewY);
 });
 
-function renderCurrentMapView(viewX, viewY) {
+// render view using map and viewX, viewY as starting point 
+function renderCurrentView(viewX, viewY) {
 
 	$("#container").empty();
-	for (let x = 0; x < mapWidth && (wW >= x * size); x++) {
-		for (let y = 0; y < mapHeight && (wH >= y * size); y++) {
-			if (x === 10 - viewX || y === 20 - viewY) {
-				$("#container").append(pavementTile.clone().css({
-					"left": x * size,
-					"top": y * size
-				}));
-			} else {
+
+	for (let x = 0; x < mapWidth && (wW >= x * tileSize); x++) {
+		for (let y = 0; y < mapHeight && (wH >= y * tileSize); y++) {
+			const tileType = map[viewX+x][viewY+y].type;
+			if (tileType == "grass"){
 				$("#container").append(grassTile.clone().css({
-					"left": x * size,
-					"top": y * size
+					"left": x * tileSize,
+					"top": y * tileSize
 				}));
-			}
+			} else if (tileType == "road"){
+				$("#container").append(pavementTile.clone().css({
+					"left": x * tileSize,
+					"top": y * tileSize
+				}));
+			} 		
 		}
 	}
-
-
 }
