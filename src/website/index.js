@@ -6,11 +6,15 @@ const mapWidth = 100;
 const mapHeight = 100;
 const wH = window.innerHeight;
 const wW = window.innerWidth;
+// const map = [];
 
 const grassTile = makeTile("grass_tile.png");
 const pavementTile = makeTile("pavement_tile.jpg");
 const sandTile = makeTile("sand_waves_tile.jpg");
 const clayTile = makeTile("dry_clay_tile.jpg");
+
+
+$(document).on("click", ".tile", changeTileInMap);
 
 function makeTile(tileName) {
 	return $("<img>").attr({
@@ -19,19 +23,28 @@ function makeTile(tileName) {
 		"height": tileSize
 	}).addClass("tile");
 }
-const map = [];
 
-for (let y = 0; y < mapHeight; y++) {
-	const row = []
-	map.push(row);
-	for (let x = 0; x < mapWidth; x++) {
-		row.push({
-			type: 'grass',
-		})
-	}
-};
+function changeTileInMap(){
+ const x = $(this).attr("x");
+ const y =  $(this).attr("y");
+ const type = activeTool;
+	
+ map[x][y].type = type;
+ renderCurrentView(viewX, viewY); 
+}
 
-map[1][2].type = "road";
+
+// for (let y = 0; y < mapHeight; y++) {
+// 	const row = []
+// 	map.push(row);
+// 	for (let x = 0; x < mapWidth; x++) {
+// 		row.push({
+// 			type: 'grass',
+// 		})
+// 	}
+// };
+
+// map[1][2].type = "pavement";
 
 console.log( map[1][1]);
 const left = 37;
@@ -55,7 +68,9 @@ $(window).keydown(function (event) {
 		viewY -= 1;
 	}
 	renderCurrentView(viewX, viewY);
+
 });
+
 
 // render view using map and viewX, viewY as starting point 
 function renderCurrentView(viewX, viewY) {
@@ -69,13 +84,16 @@ function renderCurrentView(viewX, viewY) {
 				$("#container").append(grassTile.clone().css({
 					"left": x * tileSize,
 					"top": y * tileSize
-				}));
-			} else if (tileType == "road"){
+				}).attr({"x" : viewX + x, "y" : viewY + y})
+				);
+			} else if (tileType == "pavement"){
 				$("#container").append(pavementTile.clone().css({
 					"left": x * tileSize,
 					"top": y * tileSize
-				}));
+				}).attr({"x" : viewX + x, "y" : viewY + y})
+				);
 			} 		
 		}
 	}
+
 }

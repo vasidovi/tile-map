@@ -15,4 +15,5 @@ class Tools {
 
 const tools = {
 	pavement: "pavement",
+	grass: "grass",
 };
