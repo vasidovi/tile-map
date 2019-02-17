@@ -1,0 +1,25 @@
+{
+  "name": "tile-map",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/ws/main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vasidovi/tile-map.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vasidovi/tile-map/issues"
+  },
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "node-persist": "^3.0.4"
+  },
+  "homepage": "https://github.com/vasidovi/tile-map#readme"
+}
