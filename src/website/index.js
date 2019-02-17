@@ -1,3 +1,5 @@
+// import {} from "./toolsButtons.js"
+
 const root = "../../res/images/";
 const tileSize = 100;
 const mapWidth = 100;
