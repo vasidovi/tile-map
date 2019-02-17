@@ -7,11 +7,22 @@
 </head>
 
 <body>
+    <div id="container">
 
-    <div id="container">      
+    </div>
+
+    <div id="tools" class="tool-button-container">
+        <button v-for="tool in tools" :id="tool.name + '-btn'" class="tool-button" :title="tool.title" v-bind:class="{active: tool.isActive}"
+            v-on:click="setActiveTool(tool)">
+            <img :src="tool.src" />
+        </button>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://unpkg.com/vue"></script>
+
+    <script src="./Tools/Tools.js"></script>
+    <script src="./toolsButtons.js"></script>
     <script src="./index.js"></script>
 </body>
 

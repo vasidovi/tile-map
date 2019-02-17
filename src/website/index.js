@@ -1,3 +1,5 @@
+// import {} from "./toolsButtons.js"
+
 const root = "../../res/images/";
 const grassTileSrc = root + "grass_tile.png";
 const pavementTileSrc = root + "pavement_tile.jpg";
