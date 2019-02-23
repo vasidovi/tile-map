@@ -1,12 +1,25 @@
 // import {} from "./toolsButtons.js"
 
-const root = "../../res/images/";
+const root = "../../images/";
+
+let map = [];
+
+$.ajax({
+	type: "GET",
+	success: function(data) {
+		console.log(data);
+		map = data; 
+		renderCurrentView(viewX, viewY);
+ },
+	url: "/map"
+});
+
+
 const tileSize = 100;
 const mapWidth = 100;
 const mapHeight = 100;
 const wH = window.innerHeight;
 const wW = window.innerWidth;
-// const map = [];
 
 const grassTile = makeTile("grass_tile.png");
 const pavementTile = makeTile("pavement_tile.jpg");
@@ -33,28 +46,12 @@ function changeTileInMap(){
  renderCurrentView(viewX, viewY); 
 }
 
-
-// for (let y = 0; y < mapHeight; y++) {
-// 	const row = []
-// 	map.push(row);
-// 	for (let x = 0; x < mapWidth; x++) {
-// 		row.push({
-// 			type: 'grass',
-// 		})
-// 	}
-// };
-
-// map[1][2].type = "pavement";
-
-console.log( map[1][1]);
 const left = 37;
 const up = 38;
 const right = 39;
 const down = 40;
 let viewX = 0;
 let viewY = 0;
-
-renderCurrentView(viewX, viewY);
 
 $(window).keydown(function (event) {
 

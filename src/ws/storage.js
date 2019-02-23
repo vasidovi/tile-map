@@ -9,12 +9,6 @@ exports.set = async function (key, item) {
 
 ;
 (async () => {
-	await nodePersist.init(/* options ... */);
+	await nodePersist.init(/* optional parameters */);
 
-	if (!await nodePersist.getItem('initialized')) {
-		await nodePersist.setItem('initialized', true);
-		console.log('Storage has been successfully initialized.');
-	} else {
-		console.log('Storage already initialized.');
-	}
 })();

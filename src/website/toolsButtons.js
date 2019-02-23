@@ -6,11 +6,11 @@ const data = {
 	tools: [{
 		name: 'pavement',
 		title: 'Pavement',
-		src: '../../res/images/pavement_tile.jpg'
+		src: '../../images/pavement_tile.jpg'
 	},{
 		name: 'grass',
 		title: 'Grass',
-		src: '../../res/images/grass_tile.png'
+		src: '../../images/grass_tile.png'
 	},
 	{
 		name: 'save',
@@ -40,8 +40,13 @@ const app = new Vue({
 });
 
 function saveMap(){
-	const savedMap = "const map=" + JSON.stringify(map);
 
-	var blob = new Blob([savedMap], {type: "text/plain;charset=utf-8"});
-  saveAs(blob, "map.js");
+	$.ajax({
+		type: "POST",
+		contentType: "application/json",
+		url: "/map",
+		data: JSON.stringify(map),
+		// success: function(){},
+		dataType: "json"
+	});
 }
