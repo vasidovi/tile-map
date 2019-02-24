@@ -8,7 +8,7 @@ const storage = require('./storage');
 const app = express();
 const port = 3000;
 
-// app.use(bodyParser.json());
+app.use(bodyParser.json({limit: '50mb'}));
 app.use('/images', express.static(imagesPath));
 app.use('/', express.static('src/website'));
 
@@ -22,7 +22,7 @@ app.get('/map', asyncMiddleware(async (req, res, next) => {
 	res.send(await storage.get('map'));
 }));
 
-app.get('/imagesPath', asyncMiddleware(async (req, res, next) => {
+app.get('/images', asyncMiddleware(async (req, res, next) => {
 	res.send(fs.readdirSync(imagesPath));
 }));
 
