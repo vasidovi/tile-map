@@ -20,9 +20,9 @@ $.ajax({
 function createTestMap() {
 	map = [];
 	for (let x = 0; x < 100; x++) {
-		map.push([]); 
+		map.push([]);
 		for (let y = 0; y < 100; y++) {
-		  map[x].push({});
+			map[x].push({});
 			map[x][y].type = "grass";
 		}
 	}
@@ -45,9 +45,10 @@ $(document).on("click", ".tile", changeTileInMap);
 
 function makeTile(tileName) {
 	return $("<img>").attr({
-		"src": root + tileName,
-		"width": tileSize,
-		"height": tileSize
+		src: root + tileName,
+		width: tileSize,
+		height: tileSize,
+		ondragstart: "return false;",
 	}).addClass("tile");
 }
 
