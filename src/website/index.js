@@ -1,6 +1,6 @@
 // import {} from "./toolsButtons.js"
 
-const root = "/images/";
+const root = "images/";
 
 let map = [];
 
@@ -34,22 +34,7 @@ const mapHeight = 100;
 const wH = window.innerHeight;
 const wW = window.innerWidth;
 
-const grassTile = makeTile("grass_tile.png");
-const pavementTile = makeTile("pavement_tile.jpg");
-const sandTile = makeTile("sand_waves_tile.jpg");
-const clayTile = makeTile("dry_clay_tile.jpg");
-
-
 $(document).on("click", ".tile", changeTileInMap);
-
-function makeTile(tileName) {
-	return $("<img>").attr({
-		src: root + tileName,
-		width: tileSize,
-		height: tileSize,
-		ondragstart: "return false;",
-	}).addClass("tile");
-}
 
 function changeTileInMap() {
 	const x = $(this).attr("x");
@@ -91,23 +76,14 @@ function renderCurrentView(viewX, viewY) {
 	for (let x = 0; x < mapWidth && (wW >= x * tileSize); x++) {
 		for (let y = 0; y < mapHeight && (wH >= y * tileSize); y++) {
 			const tileType = map[viewX + x][viewY + y].type;
-			if (tileType == "grass") {
-				$("#container").append(grassTile.clone().css({
-					"left": x * tileSize,
-					"top": y * tileSize
-				}).attr({
-					"x": viewX + x,
-					"y": viewY + y
-				}));
-			} else if (tileType == "pavement") {
-				$("#container").append(pavementTile.clone().css({
-					"left": x * tileSize,
-					"top": y * tileSize
-				}).attr({
-					"x": viewX + x,
-					"y": viewY + y
-				}));
-			}
+			const tile = tiles[tileType];
+			$("#container").append(tile.clone().css({
+				"left": x * tileSize,
+				"top": y * tileSize
+			}).attr({
+				"x": viewX + x,
+				"y": viewY + y
+			}));
 		}
 	}
 
