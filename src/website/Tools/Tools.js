@@ -6,14 +6,9 @@ class Tools {
 	}
 
 	static setActiveTool(toolName) {
-		activeTool = tools[toolName];
+		activeTool = toolName;
 		if (!activeTool) {
 			console.log(`Couldn't find tool by name '${toolName}'`);
 		}
 	}
 }
-
-// const tools = {
-// 	pavement: "pavement",
-// 	grass: "grass",
-// };

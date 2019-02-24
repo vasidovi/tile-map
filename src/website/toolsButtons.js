@@ -8,30 +8,35 @@ let tools = [{
 	action: saveMap
 }];
 
-// addTileTools(tools);
+ getImages();
 
+function addTileTools(images) {
 
-function addTileTools() {
-
-	// [of images]
-	const images = getImages();
-	console.log(images);
-
-	// for (img in images) {
-	// 	// tool has {name: , title, src}	
-	// 	const tileTool = makeTileTool(tileImg);
-	// 	tools.push(tileTool);
-	// }
+	// console.log(images);
+	 for (img of images) {
+		 // tool has {name: , title, src}	
+	 	const tileTool = makeTileTool(img);
+		  tools.push(tileTool);
+		 console.log(tileTool);
+	 }
 };
 
+function makeTileTool(imageName) {
+	const name =  imageName.slice(0, imageName.length-4).replace("_tile", "").replace("_", " ");
+	return {
+		name,
+		title: name.charAt(0).toUpperCase() + name.slice(1),
+		src: root + imageName,
+	}
+};
+	
+	
 
 function getImages(){
 
 	$.ajax({
 		type: "GET",
-		success: function(imageNames) {
-			console.log(imageNames);
-	 },
+		success: addTileTools,
 		url: "/images",
 	});
 		

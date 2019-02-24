@@ -1,13 +1,12 @@
 // import {} from "./toolsButtons.js"
 
-const root = "../../images/";
+const root = "/images/";
 
 let map = [];
 
 $.ajax({
 	type: "GET",
 	success: function (data) {
-		console.log(data);
 		map = data;
 		if (map.length == 0) {
 			createTestMap();
