@@ -1,13 +1,15 @@
 const express = require('express');
 var bodyParser = require('body-parser');
+var fs = require('fs');
 
+const imagesPath = "res/images";
 const storage = require('./storage');
 
 const app = express();
 const port = 3000;
 
 // app.use(bodyParser.json());
-app.use('/images', express.static('res/images'));
+app.use('/images', express.static(imagesPath));
 app.use('/', express.static('src/website'));
 
 const asyncMiddleware = fn =>
@@ -18,6 +20,10 @@ const asyncMiddleware = fn =>
 
 app.get('/map', asyncMiddleware(async (req, res, next) => {
 	res.send(await storage.get('map'));
+}));
+
+app.get('/imagesPath', asyncMiddleware(async (req, res, next) => {
+	res.send(fs.readdirSync(imagesPath));
 }));
 
 app.post('/map', asyncMiddleware(async (req, res, next) => {

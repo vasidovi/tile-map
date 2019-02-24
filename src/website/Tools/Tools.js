@@ -13,7 +13,7 @@ class Tools {
 	}
 }
 
-const tools = {
-	pavement: "pavement",
-	grass: "grass",
-};
+// const tools = {
+// 	pavement: "pavement",
+// 	grass: "grass",
+// };

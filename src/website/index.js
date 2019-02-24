@@ -6,14 +6,28 @@ let map = [];
 
 $.ajax({
 	type: "GET",
-	success: function(data) {
+	success: function (data) {
 		console.log(data);
-		map = data; 
+		map = data;
+		if (map.length == 0) {
+			createTestMap();
+		}
 		renderCurrentView(viewX, viewY);
- },
+	},
 	url: "/map"
 });
 
+function createTestMap() {
+	map = [];
+	for (let x = 0; x < 100; x++) {
+		map.push([]); 
+		for (let y = 0; y < 100; y++) {
+		  map[x].push({});
+			map[x][y].type = "grass";
+		}
+	}
+
+};
 
 const tileSize = 100;
 const mapWidth = 100;
@@ -37,13 +51,13 @@ function makeTile(tileName) {
 	}).addClass("tile");
 }
 
-function changeTileInMap(){
- const x = $(this).attr("x");
- const y =  $(this).attr("y");
- const type = activeTool;
-	
- map[x][y].type = type;
- renderCurrentView(viewX, viewY); 
+function changeTileInMap() {
+	const x = $(this).attr("x");
+	const y = $(this).attr("y");
+	const type = activeTool;
+
+	map[x][y].type = type;
+	renderCurrentView(viewX, viewY);
 }
 
 const left = 37;
@@ -76,20 +90,24 @@ function renderCurrentView(viewX, viewY) {
 
 	for (let x = 0; x < mapWidth && (wW >= x * tileSize); x++) {
 		for (let y = 0; y < mapHeight && (wH >= y * tileSize); y++) {
-			const tileType = map[viewX+x][viewY+y].type;
-			if (tileType == "grass"){
+			const tileType = map[viewX + x][viewY + y].type;
+			if (tileType == "grass") {
 				$("#container").append(grassTile.clone().css({
 					"left": x * tileSize,
 					"top": y * tileSize
-				}).attr({"x" : viewX + x, "y" : viewY + y})
-				);
-			} else if (tileType == "pavement"){
+				}).attr({
+					"x": viewX + x,
+					"y": viewY + y
+				}));
+			} else if (tileType == "pavement") {
 				$("#container").append(pavementTile.clone().css({
 					"left": x * tileSize,
 					"top": y * tileSize
-				}).attr({"x" : viewX + x, "y" : viewY + y})
-				);
-			} 		
+				}).attr({
+					"x": viewX + x,
+					"y": viewY + y
+				}));
+			}
 		}
 	}
 
