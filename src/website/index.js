@@ -28,21 +28,53 @@ function createTestMap() {
 
 };
 
-const tileSize = 100;
+const tileSize = 40;
 const mapWidth = 100;
 const mapHeight = 100;
 const wH = window.innerHeight;
 const wW = window.innerWidth;
+let isMouseDown = false;
 
-$(document).on("click", ".tile", changeTileInMap);
+$(document).on("mousedown", ".tile", function () {
+	changeTileInMap(this);
+	isMouseDown = true;
+});
 
-function changeTileInMap() {
-	const x = $(this).attr("x");
-	const y = $(this).attr("y");
+$(window).on("mouseup", function () {
+	isMouseDown = false;
+});
+
+$(document).on("mouseenter", ".tile", function () {
+	if (isMouseDown) {
+
+		changeTileInMap(this);
+	}
+});
+
+// $(document).on("click", ".tile", changeTileInMap);
+
+function changeTileInMap(scope) {
+	const x = $(scope).attr("x");
+	const y = $(scope).attr("y");
 	const type = activeTool;
+	if (map[x][y].type != type) {
+		map[x][y].type = type;
+		changeTile(scope, x, y);
+	}
+}
 
-	map[x][y].type = type;
-	renderCurrentView(viewX, viewY);
+
+function changeTile(scope, x, y) {
+	// $(scope).remove();
+	const tile = tiles[map[x][y].type];
+	// $("#container").append(tile.clone().css({
+	// 	"left": x * tileSize,
+	// 	"top": y * tileSize
+	// }).attr({
+	// 	"x": viewX + x,
+	// 	"y": viewY + y
+	// }));
+	$(scope).attr("src", tile.attr("src"));
 }
 
 const left = 37;
@@ -68,6 +100,7 @@ $(window).keydown(function (event) {
 });
 
 
+
 // render view using map and viewX, viewY as starting point 
 function renderCurrentView(viewX, viewY) {
 
@@ -77,6 +110,8 @@ function renderCurrentView(viewX, viewY) {
 		for (let y = 0; y < mapHeight && (wH >= y * tileSize); y++) {
 			const tileType = map[viewX + x][viewY + y].type;
 			const tile = tiles[tileType];
+			 console.log(tiles);
+			 console.log(tileType);
 			$("#container").append(tile.clone().css({
 				"left": x * tileSize,
 				"top": y * tileSize

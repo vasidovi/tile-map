@@ -10,15 +10,6 @@ let tools = [{
 
  getImages();
 
-// function addTileTools(images) {
-// 	// console.log(images);
-// 	 for (img of images) {
-// 		 // tool has {name: , title, src}	
-// 	 	const tileTool = makeTileTool(img);
-// 		  tools.push(tileTool);
-// 	 }
-// };
-
 function addTilesAndTools(images){
 	for (img of images) {
 		const name =  img.slice(0, img.length-4).replace("_tile", "").replace("_", " ");
@@ -28,8 +19,8 @@ function addTilesAndTools(images){
 		tools.push(tileTool);
 		tiles[name] = tile;
 	}
+	Tools.setActiveTool(Object.keys(tiles)[0]);
 };
-
 
 const tiles = {};
 
@@ -51,7 +42,7 @@ function makeTileTool(name, src) {
 }
 	
 function getImages(){
-
+	
 	$.ajax({
 		type: "GET",
 		success: addTilesAndTools, 
