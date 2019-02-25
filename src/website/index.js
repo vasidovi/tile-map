@@ -29,7 +29,7 @@ function createTestMap() {
 
 };
 
-const tileSize = 100;
+const tileSize = 40;
 const mapWidth = 100;
 const mapHeight = 100;
 const wH = window.innerHeight;
