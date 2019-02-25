@@ -10,6 +10,7 @@ body {
   position: absolute;
   display: block;
   box-sizing: border-box;
+  z-index: 0;
   /* width: 20px;
   height: 20px;
   background-color: lawngreen; */
@@ -19,6 +20,14 @@ body {
   -moz-user-select: none;
   -o-user-select: none;
   user-select: none;
+}
+
+.object{
+  position: absolute;
+  display: block;
+  box-sizing: border-box;
+  z-index: 1;
+
 }
 
 .tile:hover {

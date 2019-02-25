@@ -46,7 +46,7 @@ function getImages(){
 	$.ajax({
 		type: "GET",
 		success: addTilesAndTools, 
-		url: "/images",
+		url: "/tiles",
 	});
 		
 };

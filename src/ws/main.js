@@ -1,6 +1,7 @@
 const express = require('express');
 var bodyParser = require('body-parser');
 var fs = require('fs');
+var path = require('path');
 
 const imagesPath = "res/images";
 const storage = require('./storage');
@@ -22,12 +23,12 @@ app.get('/map', asyncMiddleware(async (req, res, next) => {
 	res.send(await storage.get('map'));
 }));
 
-app.get('/images', asyncMiddleware(async (req, res, next) => {
-	res.send(fs.readdirSync(imagesPath));
+app.get('/tiles', asyncMiddleware(async (req, res, next) => {
+	res.send(fs.readdirSync(path.join(imagesPath, "tiles")));
 }));
 
 app.post('/map', asyncMiddleware(async (req, res, next) => {
-	await storage.set('map', req.body);
+		await storage.set('map', req.body);
 	res.sendStatus(201);
 }));
 

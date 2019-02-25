@@ -1,6 +1,6 @@
 // import {} from "./toolsButtons.js"
 
-const root = "images/";
+const root = "images/tiles/";
 
 let map = [];
 
@@ -11,6 +11,7 @@ $.ajax({
 		if (map.length == 0) {
 			createTestMap();
 		}
+		spawnRandomTrees(1000);
 		renderCurrentView(viewX, viewY);
 	},
 	url: "/map"
@@ -28,7 +29,7 @@ function createTestMap() {
 
 };
 
-const tileSize = 40;
+const tileSize = 100;
 const mapWidth = 100;
 const mapHeight = 100;
 const wH = window.innerHeight;
@@ -65,15 +66,7 @@ function changeTileInMap(scope) {
 
 
 function changeTile(scope, x, y) {
-	// $(scope).remove();
 	const tile = tiles[map[x][y].type];
-	// $("#container").append(tile.clone().css({
-	// 	"left": x * tileSize,
-	// 	"top": y * tileSize
-	// }).attr({
-	// 	"x": viewX + x,
-	// 	"y": viewY + y
-	// }));
 	$(scope).attr("src", tile.attr("src"));
 }
 
@@ -99,10 +92,9 @@ $(window).keydown(function (event) {
 
 });
 
-
-
 // render view using map and viewX, viewY as starting point 
 function renderCurrentView(viewX, viewY) {
+	let now = new Date();
 
 	$("#container").empty();
 
@@ -110,8 +102,7 @@ function renderCurrentView(viewX, viewY) {
 		for (let y = 0; y < mapHeight && (wH >= y * tileSize); y++) {
 			const tileType = map[viewX + x][viewY + y].type;
 			const tile = tiles[tileType];
-			 console.log(tiles);
-			 console.log(tileType);
+
 			$("#container").append(tile.clone().css({
 				"left": x * tileSize,
 				"top": y * tileSize
@@ -119,7 +110,26 @@ function renderCurrentView(viewX, viewY) {
 				"x": viewX + x,
 				"y": viewY + y
 			}));
-		}
-	}
 
+		}
+	 }
+	 
+	 const objectsInView = objectMap.filter(object => (
+		object.x >= viewX
+		&& object.x < viewX + wW / tileSize  
+		&& object.y >= viewY 
+		&& object.y < viewY + wH / tileSize  
+		 ));
+		 console.log(objectsInView);
+
+	 for (let i = 0; i< objectsInView.length; i++)
+	 {
+		 const object = objects[objectsInView[i].type];
+		 $("#container").append(object.clone().css({
+			"left":(objectsInView[i].x  - viewX)* tileSize,
+			"top": (objectsInView[i].y - viewY)* tileSize
+		}));
+	}
+	 
+	console.log((new Date() -now) + "ms");
 }
