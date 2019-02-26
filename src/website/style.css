@@ -23,6 +23,7 @@ body {
 }
 
 .object{
+  pointer-events: none;
   position: absolute;
   display: block;
   box-sizing: border-box;
