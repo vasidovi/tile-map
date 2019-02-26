@@ -4,19 +4,6 @@ const root = "images/tiles/";
 
 let map = [];
 
-$.ajax({
-	type: "GET",
-	success: function (data) {
-		map = data;
-		if (map.length == 0) {
-			createTestMap();
-		}
-		spawnRandomTrees(1000);
-		renderCurrentView(viewX, viewY);
-	},
-	url: "/map"
-});
-
 function createTestMap() {
 	map = [];
 	for (let x = 0; x < 100; x++) {
@@ -64,7 +51,6 @@ function changeTileInMap(scope) {
 	}
 }
 
-
 function changeTile(scope, x, y) {
 	const tile = tiles[map[x][y].type];
 	$(scope).attr("src", tile.attr("src"));
@@ -102,7 +88,6 @@ function renderCurrentView(viewX, viewY) {
 		for (let y = 0; y < mapHeight && (wH >= y * tileSize); y++) {
 			const tileType = map[viewX + x][viewY + y].type;
 			const tile = tiles[tileType];
-
 			$("#container").append(tile.clone().css({
 				"left": x * tileSize,
 				"top": y * tileSize
@@ -120,7 +105,6 @@ function renderCurrentView(viewX, viewY) {
 		&& object.y >= viewY 
 		&& object.y < viewY + wH / tileSize  
 		 ));
-		 console.log(objectsInView);
 
 	 for (let i = 0; i< objectsInView.length; i++)
 	 {

@@ -5,7 +5,7 @@
  const treeWidth = 40;
  const treeHeight = 60;
  const objects = {};
- const objectMap = [];
+ let objectMap = [];
  const mapSize = 100;
 
  objects.tree = makeObject(treeSrc, treeWidth, treeHeight);

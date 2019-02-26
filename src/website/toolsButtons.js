@@ -8,12 +8,12 @@ let tools = [{
 	action: saveMap
 }];
 
- getImages();
+getImages();
 
-function addTilesAndTools(images){
+function addTilesAndTools(images) {
 	for (img of images) {
-		const name =  img.slice(0, img.length-4).replace("_tile", "").replace("_", " ");
-		const src =  root + img;
+		const name = img.slice(0, img.length - 4).replace("_tile", "").replace("_", " ");
+		const src = root + img;
 		const tileTool = makeTileTool(name, src);
 		const tile = makeTile(src);
 		tools.push(tileTool);
@@ -40,15 +40,35 @@ function makeTileTool(name, src) {
 		src,
 	}
 }
-	
-function getImages(){
-	
+
+function getImages() {
+
 	$.ajax({
 		type: "GET",
-		success: addTilesAndTools, 
+		success: function (data) {
+			addTilesAndTools(data);
+			$.ajax({
+				type: "GET",
+				success: function (data) {
+
+					if (data != undefined && data.map != undefined) {
+						map = data.map;
+					} else {
+						createTestMap();
+					}
+
+					if (data != undefined && data.objectMap != undefined) {
+						objectMap = data.objectMap;
+					} else {
+						spawnRandomTrees(1000);
+					}
+					renderCurrentView(viewX, viewY);
+				},
+				url: "/map"
+			});
+		},
 		url: "/tiles",
 	});
-		
 };
 
 const data = {
@@ -76,7 +96,10 @@ function saveMap() {
 		type: "POST",
 		contentType: "application/json",
 		url: "/map",
-		data: JSON.stringify(map),
+		data: JSON.stringify({
+			map,
+			objectMap
+		}),
 		// success: function(){},
 		dataType: "json"
 	});
