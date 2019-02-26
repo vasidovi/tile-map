@@ -3,6 +3,7 @@
 const root = "images/tiles/";
 
 let map = [];
+let view = [];
 
 function createTestMap() {
 	map = [];
@@ -42,8 +43,8 @@ $(document).on("mouseenter", ".tile", function () {
 // $(document).on("click", ".tile", changeTileInMap);
 
 function changeTileInMap(scope) {
-	const x = $(scope).attr("x");
-	const y = $(scope).attr("y");
+	const x = parseInt($(scope).attr("x")) + viewX;
+	const y = parseInt($(scope).attr("y")) + viewY;
 	const type = activeTool;
 	if (map[x][y].type != type) {
 		map[x][y].type = type;
@@ -78,42 +79,80 @@ $(window).keydown(function (event) {
 
 });
 
-// render view using map and viewX, viewY as starting point 
-function renderCurrentView(viewX, viewY) {
-	let now = new Date();
-
-	$("#container").empty();
+function createView(viewX, viewY) {
 
 	for (let x = 0; x < mapWidth && (wW >= x * tileSize); x++) {
 		for (let y = 0; y < mapHeight && (wH >= y * tileSize); y++) {
 			const tileType = map[viewX + x][viewY + y].type;
 			const tile = tiles[tileType];
-			$("#container").append(tile.clone().css({
+			const viewInstance = tile.clone().css({
 				"left": x * tileSize,
 				"top": y * tileSize
 			}).attr({
-				"x": viewX + x,
-				"y": viewY + y
-			}));
-
+				"x": x,
+				"y": y
+			});
+			$("#container").append(viewInstance);
+			view.push(viewInstance);
 		}
-	 }
-	 
-	 const objectsInView = objectMap.filter(object => (
-		object.x >= viewX
-		&& object.x < viewX + wW / tileSize  
-		&& object.y >= viewY 
-		&& object.y < viewY + wH / tileSize  
-		 ));
+	}
+}
 
-	 for (let i = 0; i< objectsInView.length; i++)
-	 {
-		 const object = objects[objectsInView[i].type];
-		 $("#container").append(object.clone().css({
-			"left":(objectsInView[i].x  - viewX)* tileSize,
-			"top": (objectsInView[i].y - viewY)* tileSize
+function updateView(viewX, viewY) {
+
+	for (let i = 0; i < view.length; i++) {
+
+		const x = parseInt(view[i].attr("x")) + viewX;
+		const y = parseInt(view[i].attr("y")) + viewY;
+
+		if (x < 0) {
+			x = 0;
+		} else if (x >= mapWidth) {
+			x = mapWidth - 1;
+		}
+		if (y < 0) {
+			y = 0;
+		} else if (y >= mapHeight) {
+			y = mapHeight - 1;
+		}
+
+		const tileType = map[x][y].type;
+		const src = tiles[tileType].attr("src");
+
+		view[i].attr("src", src);
+	}
+
+}
+
+
+// render view using map and viewX, viewY as starting point 
+function renderCurrentView(viewX, viewY) {
+	let now = new Date();
+
+	// $("#container").empty();
+
+	if (view.length == 0) {
+		createView(viewX, viewY);
+	} else {
+		updateView(viewX, viewY);
+	}
+  
+$(".object").remove();
+
+	const objectsInView = objectMap.filter(object => (
+		object.x >= viewX &&
+		object.x < viewX + wW / tileSize &&
+		object.y >= viewY &&
+		object.y < viewY + wH / tileSize
+	));
+
+	for (let i = 0; i < objectsInView.length; i++) {
+		const object = objects[objectsInView[i].type];
+		$("#container").append(object.clone().css({
+			"left": (objectsInView[i].x - viewX) * tileSize,
+			"top": (objectsInView[i].y - viewY) * tileSize
 		}));
 	}
-	 
-	console.log((new Date() -now) + "ms");
+
+	console.log((new Date() - now) + "ms");
 }
